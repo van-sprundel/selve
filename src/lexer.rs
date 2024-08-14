@@ -17,6 +17,21 @@ impl<'a> Lexer<'a> {
         }
     }
 
+    pub fn parse(&mut self) -> Vec<Token> {
+        let mut tokens = Vec::new();
+
+        loop {
+            let token = self.next_token();
+            tokens.push(token.clone());
+
+            if token.kind == TokenKind::Eof {
+                break;
+            }
+        }
+
+        tokens
+    }
+
     pub fn next_token(&mut self) -> Token {
         self.skip_whitespace();
 
@@ -216,16 +231,7 @@ mod test {
     ]; "simple_fn_stmt")]
     fn should_succeed(input: &str, expected: Vec<Token>) {
         let mut lexer = Lexer::new(input);
-        let mut tokens = Vec::new();
-
-        loop {
-            let token = lexer.next_token();
-            tokens.push(token.clone());
-
-            if token.kind == TokenKind::Eof {
-                break;
-            }
-        }
+        let tokens = lexer.parse();
 
         assert_eq!(tokens, expected);
     }

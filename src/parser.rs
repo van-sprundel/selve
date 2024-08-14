@@ -369,12 +369,12 @@ mod test {
                             right: Box::new(Expr::Grouping(Box::new(Expr::Binary {
                                 left: Box::new(Expr::Literal(Literal::Integer(2))), 
                                 right: Box::new(Expr::Literal(Literal::Integer(5))), 
-                                operator: Token {kind: TokenKind::Percentage, line: 1, column: 21},
+                                operator: Token { kind: TokenKind::Percentage, line: 1, column: 21 },
                             }))), 
-                            operator: Token {kind: TokenKind::Slash, line: 1, column: 16}
+                            operator: Token { kind: TokenKind::Slash, line: 1, column: 16 }
                         }),
                         right: Box::new(Expr::Literal(Literal::Integer(4))),
-                        operator: Token {kind: TokenKind::Asterisk, line: 1, column: 26}
+                        operator: Token { kind: TokenKind::Asterisk, line: 1, column: 26 }
                     }),
                     operator: Token { kind: TokenKind::Plus, line: 1, column: 12}
                 })
@@ -411,11 +411,11 @@ mod test {
         Token { kind: TokenKind::Eof, line: 3, column: 6 }
       ], vec![
             Stmt::FunctionDecl(
-                Token {kind: TokenKind::Identifier("foo".to_string()), line: 1, column: 7}, 
+                Token { kind: TokenKind::Identifier("foo".to_string()), line: 1, column: 7 }, 
                 vec![], 
                 Box::new(Stmt::Block(vec![
                         Stmt::Let(
-                            Token {kind: TokenKind::Identifier("x".to_string()), line: 2, column: 14}, 
+                            Token { kind: TokenKind::Identifier("x".to_string()), line: 2, column: 14 }, 
                             Some(Expr::Literal(Literal::Integer(5)))
                         )
                 ]))
