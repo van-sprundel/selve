@@ -1,7 +1,12 @@
 # Selve
+The most basic programming language I could think of.
 
 ## Goal
+The goal is to make use of [inkwell](https://github.com/TheDan64/inkwell) to optimise code using `LLVM`.
 
+I'm currently in the middle of creating the language, comments aren't even supported yet!
+
+## Usage
 ```
 // Factorial
 fn factorial(n: int) -> int {
