@@ -22,7 +22,7 @@ fn main() {
     }
 }
 
-fn repl() {
+fn repl() -> Result<()> {
     let mut input = String::new();
     std::io::stdin().lock().read_line(&mut input).unwrap();
 
@@ -32,11 +32,13 @@ fn repl() {
 
     // Parser
     let mut parser = Parser::new(tokens);
-    let mut ast = parser.parse();
+    let mut ast = parser.parse()?;
 
     // Semantic analysis
     let mut type_checker = TypeChecker::new();
     type_checker.check(&mut ast).expect("Type check failed");
 
     println!("{:?}", ast);
+
+    Ok(())
 }

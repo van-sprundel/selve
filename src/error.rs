@@ -2,6 +2,8 @@ use std::error;
 
 use thiserror::Error;
 
+use crate::token::{Token, TokenKind};
+
 pub type Result<T> = std::result::Result<T, Error>;
 
 #[derive(Debug, PartialEq, Error)]
@@ -15,7 +17,26 @@ pub enum Error {
 }
 
 #[derive(Debug, PartialEq, Error)]
-pub enum ParserError {}
+pub enum ParserError {
+    #[error("Expected token {expected:?}")]
+    UnexpectedToken { expected: TokenKind },
+    #[error("Expected identifier")]
+    ExpectedIdentifier,
+    #[error("Expected function name")]
+    ExpectedFunctionName,
+    #[error("Unexpected character")]
+    UnexpectedCharacter,
+    #[error("Unexpected end of input")]
+    UnexpectedEOF,
+    #[error("Invalid expression")]
+    InvalidExpression,
+    #[error("Invalid assignment target")]
+    InvalidAssignmentTarget,
+    #[error("Mismatched parentheses")]
+    MismatchedParentheses,
+    #[error("Invalid statement")]
+    InvalidStatement,
+}
 
 #[derive(Debug, PartialEq, Error)]
 pub enum LexerError {}
