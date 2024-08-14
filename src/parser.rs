@@ -265,14 +265,17 @@ impl Parser {
     }
 
     fn primary(&mut self) -> Expr {
-        match self.advance().kind {
+        let token = self.advance();
+
+        match token.clone().kind {
             TokenKind::Integer(value) => Expr::Literal(Literal::Integer(value)),
             TokenKind::Float(value) => Expr::Literal(Literal::Float(value)),
             TokenKind::String(value) => Expr::Literal(Literal::String(value.clone())),
-            TokenKind::Identifier(name) => Expr::Literal(Literal::String(name.clone())),
+            TokenKind::Identifier(name) => Expr::Variable(token),
             TokenKind::LeftParen => {
                 let expr = self.expression();
                 self.consume(&TokenKind::RightParen, "Expect ')' after expression.");
+
                 Expr::Grouping(Box::new(expr))
             }
             _ => panic!("Expect expression."),
