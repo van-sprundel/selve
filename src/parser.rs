@@ -325,11 +325,10 @@ impl Parser {
 #[cfg(test)]
 mod test {
     use super::*;
-    use rstest::rstest;
+    use test_case::test_case;
 
-    #[rstest]
     // Let declarations
-    #[case(vec![
+    #[test_case(vec![
         Token { kind: TokenKind::Let, line: 1, column: 4 }, 
         Token { kind: TokenKind::Identifier("x".to_string()), line: 1, column: 6 }, 
         Token { kind: TokenKind::Equals, line: 1, column: 8 }, 
@@ -341,8 +340,8 @@ mod test {
             Token { kind: TokenKind::Identifier("x".to_string()), line: 1, column: 6 }, 
             Some(Expr::Literal(Literal::Integer(5)))
         )
-    ])]
-    #[case(vec![
+    ]; "simple_let_tokens")]
+    #[test_case(vec![
         Token { kind: TokenKind::Let, line: 1, column: 4 }, 
         Token { kind: TokenKind::Identifier("x".to_string()), line: 1, column: 6 }, 
         Token { kind: TokenKind::Equals, line: 1, column: 8 }, 
@@ -380,9 +379,9 @@ mod test {
                     operator: Token { kind: TokenKind::Plus, line: 1, column: 12}
                 })
             )
-    ])]
+    ]; "complex_let_tokens")]
     // Function declarations
-    #[case(vec![
+    #[test_case(vec![
         Token { kind: TokenKind::Fn, line: 1, column: 3 }, 
         Token { kind: TokenKind::Identifier("foo".to_string()), line: 1, column: 7 }, 
         Token { kind: TokenKind::LeftParen, line: 1, column: 8 }, 
@@ -396,8 +395,8 @@ mod test {
                 vec![], 
                 Box::new(Stmt::Block(vec![]))
             )
-    ])]
-    #[case(vec![
+    ]; "empty_fn_tokens")]
+    #[test_case(vec![
         Token { kind: TokenKind::Fn, line: 1, column: 3 }, 
         Token { kind: TokenKind::Identifier("foo".to_string()), line: 1, column: 7 }, 
         Token { kind: TokenKind::LeftParen, line: 1, column: 8 }, 
@@ -421,8 +420,8 @@ mod test {
                         )
                 ]))
             )
-    ])]
-    fn should_succeed(#[case] input: Vec<Token>, #[case] expected: Vec<Stmt>) {
+    ]; "simple_fn_tokens")]
+    fn should_succeed( input: Vec<Token>, expected: Vec<Stmt>) {
         let mut parser = Parser::new(input);
         let ast = parser.parse();
 

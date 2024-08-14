@@ -153,26 +153,31 @@ impl<'a> Lexer<'a> {
 #[cfg(test)]
 mod test {
     use super::*;
-    use rstest::rstest;
+    use test_case::test_case;
 
-    #[rstest]
     // Let declarations
-    #[case("let x = 5;", vec![
+    #[test_case("let x;", vec![
+        Token { kind: TokenKind::Let, line: 1, column: 4 }, 
+        Token { kind: TokenKind::Identifier("x".to_string()), line: 1, column: 6 }, 
+        Token { kind: TokenKind::Semicolon, line: 1, column: 7 }, 
+        Token { kind: TokenKind::Eof, line: 1, column: 7 }
+    ]; "empty_let_stmt")]
+    #[test_case("let x = 5;", vec![
         Token { kind: TokenKind::Let, line: 1, column: 4 }, 
         Token { kind: TokenKind::Identifier("x".to_string()), line: 1, column: 6 }, 
         Token { kind: TokenKind::Equals, line: 1, column: 8 }, 
         Token { kind: TokenKind::Integer(5), line: 1, column: 10 }, 
         Token { kind: TokenKind::Semicolon, line: 1, column: 11 }, 
         Token { kind: TokenKind::Eof, line: 1, column: 11 }
-    ])]
-    #[case("let x = 5 + 6 / (2 % 5) * 4;", vec![
+    ]; "simple_let_stmt")]
+    #[test_case("let x = 5 + 6 / (2 % 5) * 4;", vec![
         Token { kind: TokenKind::Let, line: 1, column: 4 }, 
         Token { kind: TokenKind::Identifier("x".to_string()), line: 1, column: 6 }, 
         Token { kind: TokenKind::Equals, line: 1, column: 8 }, 
         Token { kind: TokenKind::Integer(5), line: 1, column: 10 }, 
         Token { kind: TokenKind::Plus, line: 1, column: 12 }, 
         Token { kind: TokenKind::Integer(6), line: 1, column: 14 }, 
-        Token { kind: TokenKind::Slash, line: 1, column: 16 }, 
+        Token { kind: TokenKind::Slash, line: 1, column: 17 }, 
         Token { kind: TokenKind::LeftParen, line: 1, column: 18 }, 
         Token { kind: TokenKind::Integer(2), line: 1, column: 19 }, 
         Token { kind: TokenKind::Percentage, line: 1, column: 21 }, 
@@ -182,7 +187,7 @@ mod test {
         Token { kind: TokenKind::Integer(4), line: 1, column: 28 }, 
         Token { kind: TokenKind::Semicolon, line: 1, column: 29 }, 
         Token { kind: TokenKind::Eof, line: 1, column: 29 }
-    ])]
+    ]; "complex_let_stmt")]
     // Function declarations
     #[case(r#"fn foo() {}"#, vec![
         Token { kind: TokenKind::Fn, line: 1, column: 3 }, 
@@ -192,8 +197,8 @@ mod test {
         Token { kind: TokenKind::LeftBrace, line: 1, column: 11 }, 
         Token { kind: TokenKind::RightBrace, line: 1, column: 12 }, 
         Token { kind: TokenKind::Eof, line: 1, column: 12 }
-    ])]
-    #[case(r#"fn foo() {
+    ]; "empty_fn_stmt")]
+    #[test_case(r#"fn foo() {
         let x = 5;
     }"#, vec![
         Token { kind: TokenKind::Fn, line: 1, column: 3 }, 
@@ -208,8 +213,8 @@ mod test {
         Token { kind: TokenKind::Semicolon, line: 2, column: 19 }, 
         Token { kind: TokenKind::RightBrace, line: 3, column: 6 }, 
         Token { kind: TokenKind::Eof, line: 3, column: 6 }
-    ])]
-    fn should_succeed(#[case] input: &str, #[case] expected: Vec<Token>) {
+    ]; "simple_fn_stmt")]
+    fn should_succeed(input: &str, expected: Vec<Token>) {
         let mut lexer = Lexer::new(input);
         let mut tokens = Vec::new();
 
