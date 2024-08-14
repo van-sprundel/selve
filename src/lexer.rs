@@ -32,7 +32,14 @@ impl<'a> Lexer<'a> {
                 '+' => self.single_char_token(TokenKind::Plus),
                 '-' => self.single_char_token(TokenKind::Minus),
                 '*' => self.single_char_token(TokenKind::Asterisk),
-                '/' => self.single_char_token(TokenKind::Slash),
+                '/' => {
+                    self.advance();
+                    if self.match_next('/') {
+                        self.create_token(TokenKind::SlashSlash)
+                    } else {
+                        self.single_char_token(TokenKind::Slash)
+                    }
+                }
                 '%' => self.single_char_token(TokenKind::Percentage),
                 '=' => self.equals_token(),
                 c if c.is_alphabetic() => self.identifier(),

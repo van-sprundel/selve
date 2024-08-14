@@ -21,6 +21,7 @@ pub enum TokenKind {
     Minus,
     Asterisk,
     Slash,
+    SlashSlash,
     Percentage,
     Bang,
     Greater,
