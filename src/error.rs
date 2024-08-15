@@ -9,11 +9,11 @@ pub type Result<T> = std::result::Result<T, Error>;
 #[derive(Debug, PartialEq, Error)]
 pub enum Error {
     #[error("Parser error: {0:?}")]
-    Parser(ParserError),
+    Parser(#[from] ParserError),
     #[error("Typed error: {0:?}")]
-    Lexer(LexerError),
+    Lexer(#[from] LexerError),
     #[error("Typed error: {0:?}")]
-    Typed(TypedError),
+    Typed(#[from] TypedError),
 }
 
 #[derive(Debug, PartialEq, Error)]
@@ -57,22 +57,4 @@ pub enum TypedError {
     ArgumentMismatch,
     #[error("Not callable")]
     NotCallable,
-}
-
-impl From<TypedError> for Error {
-    fn from(value: TypedError) -> Self {
-        Self::Typed(value)
-    }
-}
-
-impl From<LexerError> for Error {
-    fn from(value: LexerError) -> Self {
-        Self::Lexer(value)
-    }
-}
-
-impl From<ParserError> for Error {
-    fn from(value: ParserError) -> Self {
-        Self::Parser(value)
-    }
 }
