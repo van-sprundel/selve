@@ -1,5 +1,6 @@
 #![allow(unused)]
 
+use codegen::compile;
 use lexer::Lexer;
 use parser::Parser;
 use std::io::BufRead;
@@ -7,6 +8,7 @@ use token::TokenKind;
 use type_checker::TypeChecker;
 
 mod ast;
+mod codegen;
 mod error;
 mod lexer;
 mod parser;
@@ -39,6 +41,9 @@ fn repl() -> Result<()> {
     type_checker.check(&mut ast).expect("Type check failed");
 
     println!("{:?}", ast);
+
+    // LLVM IR
+    compile(&ast);
 
     Ok(())
 }

@@ -161,7 +161,7 @@ impl Parser {
     }
 
     fn expression(&mut self) -> Result<Expr> {
-        Ok(self.equality()?)
+        self.equality()
     }
 
     fn equality(&mut self) -> Result<Expr> {
@@ -252,7 +252,7 @@ impl Parser {
             _ => {}
         }
 
-        Ok(self.primary()?)
+        self.primary()
     }
 
     fn primary(&mut self) -> Result<Expr> {
@@ -355,7 +355,7 @@ mod test {
             Stmt::Let(
                 Token { kind: TokenKind::Identifier("x".to_string()), line: 1, column: 6 }, 
                 Some(Expr::Binary { 
-                    left: Box::new(Expr::Literal(Literal::Integer(5))) , 
+                    left: Box::new(Expr::Literal(Literal::Integer(5))), 
                     right: Box::new(Expr::Binary {
                         left: Box::new(Expr::Binary {
                             left: Box::new(Expr::Literal(Literal::Integer(6))),
